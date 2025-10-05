@@ -35,13 +35,23 @@ public class LogAnalyzer {
     }
 
     public static String findKeyword(String keyword) {
-       /* Pattern pattern = Pattern.compile("admin");
-        Matcher matcher = pattern.matcher(keyword);
-        if (matcher.find()) {
-            System.out.println(matcher.group(1));
-            return matcher.group(1);
-        } */
-        String kek = keyword.replaceAll("\\bsearch\\b\\s*", "");
-        return kek;
+        String replace = keyword.replaceAll("\\bsearch\\b\\s*", "");
+        return replace;
+    }
+
+    public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
+        ArrayList<Integer> counterError = new ArrayList<>();
+        String indicator = "[Error]";
+        for (int i = 0; i < log.size(); i++) {
+            if (log.get(i).getLevel().equalsIgnoreCase(indicator)) {
+                counterError.add(i);
+            }
+        }
+        String level = log.get(counterError.getLast()).getLevel();
+        String message = log.get(counterError.getLast()).getMessage();
+        LogEntry lastError = new LogEntry();
+        lastError.setLevel(level);
+        lastError.setMessage(message);
+        return lastError;
     }
 }

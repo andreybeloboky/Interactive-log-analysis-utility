@@ -14,6 +14,7 @@ public class Main {
                 System.out.println("ADD - Enter log entry mode. Type 'END_ADD' to finish");
                 System.out.println("COUNT <level> - Count logs by a specific level (e.g., COUNT ERROR)");
                 System.out.println("SEARCH <keyword> - Find logs containing a keyword (e.g., SEARCH database");
+                System.out.println("LATEST_ERROR - Find the latest [ERROR]");
                 System.out.println("EXIT - Close the application");
                 System.out.println("Enter command");
                 String chooseOption = scanner.nextLine();
@@ -31,21 +32,34 @@ public class Main {
                     } while (!logLine.equalsIgnoreCase("END_ADD"));
                     System.out.println(countLog + " log(s) added");
                 } else if (chooseOption.toLowerCase().contains("count")) {
-                    int countLevel = LogAnalyzer.countLogsByLevel(items.getItems(), chooseOption);
+                    int countLevel = 0;
+                    try {
+                        countLevel = LogAnalyzer.countLogsByLevel(items.getItems(), chooseOption);
+                    } catch (NullPointerException e) {
+                        System.out.println("Counter is null");
+                    }
                     String lvl = "[" + LogAnalyzer.findLevel(chooseOption) + "]";
                     System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
                 } else if (chooseOption.toLowerCase().contains("search")) {
-                    ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(items.getItems(), chooseOption);
+                    ArrayList<LogEntry> keywordArray = new ArrayList<>();
+                    try {
+                        keywordArray = LogAnalyzer.findMessagesContaining(items.getItems(), chooseOption);
+                    } catch (NullPointerException e) {
+                        System.out.println("This keyword wasn't found");
+                    }
                     System.out.println("Found " + keywordArray.size() + " log(s):");
                     for (LogEntry key : keywordArray) {
                         System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
                     }
+                } else if (chooseOption.toLowerCase().contains("latest_error")) {
+                    LogEntry e = LogAnalyzer.findMostRecentError(items.getItems());
+                    System.out.println(e.getLevel() + " " + e.getMessage());
                 } else {
                     System.out.println("Incorrect input");
                 }
                 System.out.println("Do you want to choose any options? Yes - tap 1, no - end of the work tap 2");
                 counter = scanner.nextInt();
-                String out = scanner.nextLine();
+                scanner.nextLine();
             }
             while (counter == 1);
         } else {
