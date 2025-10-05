@@ -7,7 +7,7 @@ public class Main {
         Application items = new Application();
         System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands");
         String command = scanner.nextLine();
-        int counter;
+        String chooseOption;
         if (command.equalsIgnoreCase("HELP")) {
             do {
                 System.out.println("Available commands:");
@@ -17,7 +17,7 @@ public class Main {
                 System.out.println("LATEST_ERROR - Find the latest [ERROR]");
                 System.out.println("EXIT - Close the application");
                 System.out.println("Enter command");
-                String chooseOption = scanner.nextLine();
+                chooseOption = scanner.nextLine();
                 String logLine;
                 int countLog = 0;
                 if (chooseOption.equalsIgnoreCase("ADD")) {
@@ -36,7 +36,7 @@ public class Main {
                     try {
                         countLevel = LogAnalyzer.countLogsByLevel(items.getItems(), chooseOption);
                     } catch (NullPointerException e) {
-                        System.out.println("Counter is null");
+                        System.err.println("Counter is null");
                     }
                     String lvl = "[" + LogAnalyzer.findLevel(chooseOption) + "]";
                     System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
@@ -45,25 +45,36 @@ public class Main {
                     try {
                         keywordArray = LogAnalyzer.findMessagesContaining(items.getItems(), chooseOption);
                     } catch (NullPointerException e) {
-                        System.out.println("This keyword wasn't found");
+                        System.err.println("This keyword wasn't found");
                     }
                     System.out.println("Found " + keywordArray.size() + " log(s):");
                     for (LogEntry key : keywordArray) {
                         System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
                     }
                 } else if (chooseOption.toLowerCase().contains("latest_error")) {
-                    LogEntry e = LogAnalyzer.findMostRecentError(items.getItems());
-                    System.out.println(e.getLevel() + " " + e.getMessage());
-                } else {
-                    System.out.println("Incorrect input");
+                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(items.getItems());
+                    System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
                 }
-                System.out.println("Do you want to choose any options? Yes - tap 1, no - end of the work tap 2");
-                counter = scanner.nextInt();
-                scanner.nextLine();
-            }
-            while (counter == 1);
+                if (!chooseOption.toLowerCase().contains("exit")) {
+                    do {
+                        System.out.println("Do you want to choose any options? If you want - write continue, if you don't want to end - EXIT");
+                        chooseOption = scanner.nextLine();
+                        try {
+                            validateChoice(chooseOption);
+                        } catch (InvalidChoiceException e) {
+                            System.err.println("Error: " + e.getMessage());
+                        }
+                    } while (!chooseOption.toLowerCase().contains("exit") && !chooseOption.toLowerCase().contains("continue"));
+                }
+            } while (!chooseOption.toLowerCase().contains("exit"));
         } else {
             System.out.println("Goodbye");
+        }
+    }
+
+    public static void validateChoice(String chooseOption) throws InvalidChoiceException {
+        if (!chooseOption.equalsIgnoreCase("EXIT") && !chooseOption.equalsIgnoreCase("continue")) {
+            throw new InvalidChoiceException("Incorrect. Choose a correct option");
         }
     }
 }

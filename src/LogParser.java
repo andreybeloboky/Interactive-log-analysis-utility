@@ -7,7 +7,7 @@ public class LogParser {
         Matcher matcher = pattern.matcher(logLine);
         LogEntry user = new LogEntry();
         if (matcher.matches()){
-            int timestamp = Integer.parseInt(matcher.group(1));
+            long timestamp = Integer.parseInt(matcher.group(1));
             String level = "["+matcher.group(2)+"]";
             String message = matcher.group(3);
             user.setTimestamp(timestamp);
