@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class LogAnalyzer {
     public static int countLogsByLevel(ArrayList<LogEntry> logs, String level) {
-        String lvl = "[" + findLevel(level) + "]";
+        String lvl = findLevel(level);
         int count = 0;
         for (LogEntry log : logs) {
             if (log.getLevel().equalsIgnoreCase(lvl)) {
@@ -29,7 +29,7 @@ public class LogAnalyzer {
         Pattern pattern = Pattern.compile("\\[(.*?)]");
         Matcher matcher = pattern.matcher(level);
         if (matcher.find()) {
-            return matcher.group(1);
+            return "[" + matcher.group(1) + "]";
         }
         return null;
     }
@@ -40,18 +40,20 @@ public class LogAnalyzer {
     }
 
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
-        ArrayList<Integer> counterError = new ArrayList<>();
+        Integer counterError = 0;
         String indicator = "[Error]";
-        for (int i = 0; i < log.size(); i++) {
+        int i = log.size() - 1;
+        while (i != 0) {
             if (log.get(i).getLevel().equalsIgnoreCase(indicator)) {
-                counterError.add(i);
+                counterError = i;
+                i = 0;
+            } else {
+                i--;
             }
         }
-        String level = log.get(counterError.getLast()).getLevel();
-        String message = log.get(counterError.getLast()).getMessage();
         LogEntry lastError = new LogEntry();
-        lastError.setLevel(level);
-        lastError.setMessage(message);
+        lastError.setLevel(log.get(counterError).getLevel());
+        lastError.setMessage(log.get(counterError).getMessage());
         return lastError;
     }
 }

@@ -1,23 +1,23 @@
 import java.util.ArrayList;
 
 public class Application {
-    private ArrayList<LogEntry> items = new ArrayList<>();
+    private ArrayList<LogEntry> logEntries = new ArrayList<>();
 
     public void addItem(LogEntry item) {
-        items.add(item);
+        logEntries.add(item);
     }
 
-    public ArrayList<LogEntry> getItems() {
-        return items;
+    public ArrayList<LogEntry> getLogEntries() {
+        return logEntries;
     }
 
     public void removeItem(int index) {
-        if (index >= 0 && index < items.size()) {
-            items.remove(index);
+        if (index >= 0 && index < logEntries.size()) {
+            logEntries.remove(index);
         }
     }
 
     public void clearItems() {
-        items.clear();
+        logEntries.clear();
     }
 }

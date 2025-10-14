@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Application items = new Application();
+        Application logEntries = new Application();
         System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands");
         String command = scanner.nextLine();
         String chooseOption;
@@ -26,7 +26,7 @@ public class Main {
                         logLine = scanner.nextLine();
                         if (!logLine.toLowerCase().contains("end_add")) {
                             LogEntry user = LogParser.parseLine(logLine);
-                            items.addItem(user);
+                            logEntries.addItem(user);
                             countLog++;
                         }
                     } while (!logLine.equalsIgnoreCase("END_ADD"));
@@ -34,7 +34,7 @@ public class Main {
                 } else if (chooseOption.toLowerCase().contains("count")) {
                     int countLevel = 0;
                     try {
-                        countLevel = LogAnalyzer.countLogsByLevel(items.getItems(), chooseOption);
+                        countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
                     } catch (NullPointerException e) {
                         System.err.println("Counter is null");
                     }
@@ -43,7 +43,7 @@ public class Main {
                 } else if (chooseOption.toLowerCase().contains("search")) {
                     ArrayList<LogEntry> keywordArray = new ArrayList<>();
                     try {
-                        keywordArray = LogAnalyzer.findMessagesContaining(items.getItems(), chooseOption);
+                        keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
                     } catch (NullPointerException e) {
                         System.err.println("This keyword wasn't found");
                     }
@@ -52,7 +52,7 @@ public class Main {
                         System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
                     }
                 } else if (chooseOption.toLowerCase().contains("latest_error")) {
-                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(items.getItems());
+                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
                     System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
                 }
                 if (!chooseOption.toLowerCase().contains("exit")) {
