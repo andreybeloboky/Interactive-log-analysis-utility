@@ -5,9 +5,17 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Application logEntries = new Application();
-        System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands");
-        String command = scanner.nextLine();
+        System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands. 'EXIT' to leave.");
+        String command;
         String chooseOption;
+        do {
+            command = scanner.nextLine();
+            try {
+                validateCommand(command);
+            } catch (InvalidChoiceException e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+        } while (!command.toLowerCase().contains("exit") && !command.toLowerCase().contains("help"));
         if (command.equalsIgnoreCase("HELP")) {
             do {
                 System.out.println("Available commands:");
@@ -38,7 +46,7 @@ public class Main {
                     } catch (NullPointerException e) {
                         System.err.println("Counter is null");
                     }
-                    String lvl = "[" + LogAnalyzer.findLevel(chooseOption) + "]";
+                    String lvl = LogAnalyzer.findLevel(chooseOption);
                     System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
                 } else if (chooseOption.toLowerCase().contains("search")) {
                     ArrayList<LogEntry> keywordArray = new ArrayList<>();
@@ -65,16 +73,24 @@ public class Main {
                             System.err.println("Error: " + e.getMessage());
                         }
                     } while (!chooseOption.toLowerCase().contains("exit") && !chooseOption.toLowerCase().contains("continue"));
+                }else{
+                    System.out.println("Goodbye.");
                 }
             } while (!chooseOption.toLowerCase().contains("exit"));
         } else {
-            System.out.println("Goodbye");
+            System.out.println("Goodbye.");
         }
     }
 
     public static void validateChoice(String chooseOption) throws InvalidChoiceException {
         if (!chooseOption.equalsIgnoreCase("EXIT") && !chooseOption.equalsIgnoreCase("continue")) {
-            throw new InvalidChoiceException("Incorrect. Choose a correct option");
+            throw new InvalidChoiceException("Incorrect. Choose a correct option CONTINUE or EXIT");
+        }
+    }
+
+    public static void validateCommand(String chooseOption) throws InvalidChoiceException {
+        if (!chooseOption.equalsIgnoreCase("EXIT") && !chooseOption.equalsIgnoreCase("HELP")) {
+            throw new InvalidChoiceException("Incorrect. Choose a correct option HELP or EXIT");
         }
     }
 }
