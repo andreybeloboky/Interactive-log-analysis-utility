@@ -40,24 +40,17 @@ public class LogAnalyzer {
     }
 
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
-        Integer counterError = 0;
+        Integer counterError;
         String indicator = "[Error]";
         int i = log.size() - 1;
-        while (i > 0) {
+        while (i >= 0) {
             if (log.get(i).getLevel().equalsIgnoreCase(indicator)) {
                 counterError = i;
-                i = 0;
+                return log.get(counterError);
             } else {
                 i--;
             }
         }
-        if (i == 0) {
-            LogEntry lastError = new LogEntry();
-            lastError.setLevel(log.get(counterError).getLevel());
-            lastError.setMessage(log.get(counterError).getMessage());
-            return lastError;
-        } else {
-            return null;
-        }
+        return null;
     }
 }
