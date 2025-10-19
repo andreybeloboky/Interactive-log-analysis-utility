@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidChoiceException {
         Scanner scanner = new Scanner(System.in);
         Application logEntries = new Application();
         System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands. 'EXIT' to leave.");
@@ -40,30 +40,29 @@ public class Main {
                     } while (!logLine.equalsIgnoreCase("END_ADD"));
                     System.out.println(countLog + " log(s) added");
                 } else if (chooseOption.toLowerCase().contains("count")) {
-                    int countLevel = 0;
-                    try {
-                        countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
-                    } catch (NullPointerException e) {
-                        System.err.println("Counter is null");
+                    int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
+                    if (countLevel > 0) {
+                        String lvl = LogAnalyzer.findLevel(chooseOption);
+                        System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
+                    } else {
+                        System.err.println("There is no data");
                     }
-                    String lvl = LogAnalyzer.findLevel(chooseOption);
-                    System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
                 } else if (chooseOption.toLowerCase().contains("search")) {
-                    ArrayList<LogEntry> keywordArray = new ArrayList<>();
-                    try {
+                    ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
+                    if (!keywordArray.isEmpty()) {
                         keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
-                    } catch (NullPointerException e) {
+                        System.out.println("Found " + keywordArray.size() + " log(s):");
+                        for (LogEntry key : keywordArray) {
+                            System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
+                        }
+                    } else {
                         System.err.println("This keyword wasn't found");
                     }
-                    System.out.println("Found " + keywordArray.size() + " log(s):");
-                    for (LogEntry key : keywordArray) {
-                        System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
-                    }
                 } else if (chooseOption.toLowerCase().contains("latest_error")) {
-                    try {
-                        LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
+                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
+                    if (findLatestError != null) {
                         System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
-                    } catch (NullPointerException e) {
+                    } else {
                         System.err.println("The [ERROR] wasn't found");
                     }
                 }
