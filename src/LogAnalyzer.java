@@ -43,7 +43,7 @@ public class LogAnalyzer {
         Integer counterError = 0;
         String indicator = "[Error]";
         int i = log.size() - 1;
-        while (i != 0) {
+        while (i > 0) {
             if (log.get(i).getLevel().equalsIgnoreCase(indicator)) {
                 counterError = i;
                 i = 0;
@@ -51,9 +51,13 @@ public class LogAnalyzer {
                 i--;
             }
         }
-        LogEntry lastError = new LogEntry();
-        lastError.setLevel(log.get(counterError).getLevel());
-        lastError.setMessage(log.get(counterError).getMessage());
-        return lastError;
+        if (i == 0) {
+            LogEntry lastError = new LogEntry();
+            lastError.setLevel(log.get(counterError).getLevel());
+            lastError.setMessage(log.get(counterError).getMessage());
+            return lastError;
+        } else {
+            return null;
+        }
     }
 }

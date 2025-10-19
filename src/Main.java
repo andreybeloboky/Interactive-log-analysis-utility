@@ -60,8 +60,12 @@ public class Main {
                         System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
                     }
                 } else if (chooseOption.toLowerCase().contains("latest_error")) {
-                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
-                    System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
+                    try {
+                        LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
+                        System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
+                    } catch (NullPointerException e) {
+                        System.err.println("The [ERROR] wasn't found");
+                    }
                 }
                 if (!chooseOption.toLowerCase().contains("exit")) {
                     do {
@@ -73,7 +77,7 @@ public class Main {
                             System.err.println("Error: " + e.getMessage());
                         }
                     } while (!chooseOption.toLowerCase().contains("exit") && !chooseOption.toLowerCase().contains("continue"));
-                }else{
+                } else {
                     System.out.println("Goodbye.");
                 }
             } while (!chooseOption.toLowerCase().contains("exit"));
