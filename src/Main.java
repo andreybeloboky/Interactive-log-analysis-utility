@@ -25,19 +25,10 @@ public class Main {
                 System.out.println("LATEST_ERROR - Find the latest [ERROR]");
                 System.out.println("EXIT - Close the application");
                 System.out.println("Enter command");
-                chooseOption = scanner.nextLine();
-                String logLine;
                 int countLog = 0;
+                chooseOption = scanner.nextLine();
                 if (chooseOption.equalsIgnoreCase("ADD")) {
-                    do {
-                        System.out.println("Enter log lines. Type 'END_ADD' to finish");
-                        logLine = scanner.nextLine();
-                        if (!logLine.toLowerCase().contains("end_add")) {
-                            LogEntry user = LogParser.parseLine(logLine);
-                            logEntries.addItem(user);
-                            countLog++;
-                        }
-                    } while (!logLine.equalsIgnoreCase("END_ADD"));
+                    countLog = getCountLog(scanner, logEntries, countLog);
                     System.out.println(countLog + " log(s) added");
                 } else if (chooseOption.toLowerCase().contains("count")) {
                     int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
@@ -65,24 +56,42 @@ public class Main {
                     } else {
                         System.err.println("The [ERROR] wasn't found");
                     }
-                }
-                if (!chooseOption.toLowerCase().contains("exit")) {
-                    do {
-                        System.out.println("Do you want to choose any options? If you want - write continue, if you don't want to end - EXIT");
-                        chooseOption = scanner.nextLine();
-                        try {
-                            validateChoice(chooseOption);
-                        } catch (InvalidChoiceException e) {
-                            System.err.println("Error: " + e.getMessage());
-                        }
-                    } while (!chooseOption.toLowerCase().contains("exit") && !chooseOption.toLowerCase().contains("continue"));
+                } else if (!chooseOption.toLowerCase().contains("exit")) {
+                    System.err.println("Error");
                 } else {
-                    System.out.println("Goodbye.");
+                    chooseOption = getString(scanner);
                 }
             } while (!chooseOption.toLowerCase().contains("exit"));
-        } else {
-            System.out.println("Goodbye.");
         }
+        System.out.println("Goodbye.");
+    }
+
+    private static int getCountLog(Scanner scanner, Application logEntries, int countLog) {
+        String logLine;
+        do {
+            System.out.println("Enter log lines. Type 'END_ADD' to finish");
+            logLine = scanner.nextLine();
+            if (!logLine.toLowerCase().contains("end_add")) {
+                LogEntry user = LogParser.parseLine(logLine);
+                logEntries.addItem(user);
+                countLog++;
+            }
+        } while (!logLine.equalsIgnoreCase("END_ADD"));
+        return countLog;
+    }
+
+    private static String getString(Scanner scanner) {
+        String chooseOption;
+        do {
+            System.out.println("Do you want to choose any options? If you want - write continue, if you don't want to end - EXIT");
+            chooseOption = scanner.nextLine();
+            try {
+                validateChoice(chooseOption);
+            } catch (InvalidChoiceException e) {
+                System.err.println("Error: " + e.getMessage());
+            }
+        } while (!chooseOption.toLowerCase().contains("exit") && !chooseOption.toLowerCase().contains("continue"));
+        return chooseOption;
     }
 
     public static void validateChoice(String chooseOption) throws InvalidChoiceException {
