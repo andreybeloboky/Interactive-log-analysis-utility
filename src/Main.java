@@ -26,41 +26,45 @@ public class Main {
                 System.out.println("EXIT - Close the application");
                 System.out.println("Enter command");
                 int countLog = 0;
-                chooseOption = scanner.nextLine();
-                if (chooseOption.equalsIgnoreCase("ADD")) {
-                    countLog = getCountLog(scanner, logEntries, countLog);
-                    System.out.println(countLog + " log(s) added");
-                } else if (chooseOption.toLowerCase().contains("count")) {
-                    int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
-                    if (countLevel > 0) {
-                        String lvl = LogAnalyzer.findLevel(chooseOption);
-                        System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
-                    } else {
-                        System.err.println("There is no data");
+                try {
+                    chooseOption = scanner.nextLine();
+                    Command commandFind = Command.valueOf(chooseOption);
+                    switch (commandFind) {
+                        case ADD:
+                            countLog = getCountLog(scanner, logEntries, countLog);
+                            System.out.println(countLog + " log(s) added");
+                            break;
+                        case COUNT:
+                            int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
+                            if (countLevel > 0) {
+                                String lvl = LogAnalyzer.findLevel(chooseOption);
+                                System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
+                            } else {
+                                System.err.println("There is no data");
+                            }
+                        case SEARCH:
+                            ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
+                            if (!keywordArray.isEmpty()) {
+                                keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
+                                System.out.println("Found " + keywordArray.size() + " log(s):");
+                                for (LogEntry key : keywordArray) {
+                                    System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
+                                }
+                            } else {
+                                System.err.println("This keyword wasn't found");
+                            }
+                        case LATEST_ERROR:
+                            LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
+                            if (findLatestError != null) {
+                                System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
+                            } else {
+                                System.err.println("The [ERROR] wasn't found");
+                            }
                     }
-                } else if (chooseOption.toLowerCase().contains("search")) {
-                    ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
-                    if (!keywordArray.isEmpty()) {
-                        keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
-                        System.out.println("Found " + keywordArray.size() + " log(s):");
-                        for (LogEntry key : keywordArray) {
-                            System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
-                        }
-                    } else {
-                        System.err.println("This keyword wasn't found");
-                    }
-                } else if (chooseOption.toLowerCase().contains("latest_error")) {
-                    LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
-                    if (findLatestError != null) {
-                        System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
-                    } else {
-                        System.err.println("The [ERROR] wasn't found");
-                    }
-                } else if (!chooseOption.toLowerCase().contains("exit")) {
-                    System.err.println("Error");
-                } else {
-                    chooseOption = getString(scanner);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Incorrect input");
                 }
+                chooseOption = getString(scanner);
             } while (!chooseOption.toLowerCase().contains("exit"));
         }
         System.out.println("Goodbye.");
