@@ -27,9 +27,9 @@ public class Main {
                 System.out.println("Enter command");
                 int countLog = 0;
                 try {
-                    chooseOption = scanner.nextLine().toUpperCase();
+                    chooseOption = scanner.nextLine();
                     String[] arg = chooseOption.split(" ");
-                    Command commandFind = Command.valueOf(arg[0]);
+                    Command commandFind = Command.valueOf(arg[0].toUpperCase());
                     switch (commandFind) {
                         case ADD:
                             countLog = getCountLog(scanner, logEntries, countLog);
@@ -46,7 +46,6 @@ public class Main {
                         case SEARCH:
                             ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
                             if (!keywordArray.isEmpty()) {
-                                keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
                                 System.out.println("Found " + keywordArray.size() + " log(s):");
                                 for (LogEntry key : keywordArray) {
                                     System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());

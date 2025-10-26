@@ -16,9 +16,9 @@ public class LogAnalyzer {
 
     public static ArrayList<LogEntry> findMessagesContaining(ArrayList<LogEntry> logs, String keyword) {
         ArrayList<LogEntry> keywordArray = new ArrayList<>();
-        String findKey = findKeyword(keyword.toLowerCase());
+        //    String findKey = findKeyword(keyword.toLowerCase());
         for (LogEntry log : logs) {
-            if (log.getMessage().contains(findKey)) {
+            if (log.getMessage().contains(keyword)) {
                 keywordArray.add(log);
             }
         }
@@ -35,10 +35,12 @@ public class LogAnalyzer {
     }
 
 
-    public static String findKeyword(String keyword) {
+   /* public static String findKeyword(String keyword) {
         String replace = keyword.replaceAll("\\bsearch\\b\\s*", "");
         return replace;
     }
+
+    */
 
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
         Integer counterError;
