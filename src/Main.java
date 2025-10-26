@@ -9,7 +9,7 @@ public class Main {
         String command;
         String chooseOption;
         do {
-            command = scanner.nextLine();
+            command = scanner.nextLine().toUpperCase();
             try {
                 validateCommand(command);
             } catch (InvalidChoiceException e) {
@@ -27,7 +27,7 @@ public class Main {
                 System.out.println("Enter command");
                 int countLog = 0;
                 try {
-                    chooseOption = scanner.nextLine();
+                    chooseOption = scanner.nextLine().toUpperCase();
                     Command commandFind = Command.valueOf(chooseOption);
                     switch (commandFind) {
                         case ADD:
