@@ -34,6 +34,7 @@ public class LogAnalyzer {
         return null;
     }
 
+
     public static String findKeyword(String keyword) {
         String replace = keyword.replaceAll("\\bsearch\\b\\s*", "");
         return replace;

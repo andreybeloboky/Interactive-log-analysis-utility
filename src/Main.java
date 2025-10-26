@@ -28,22 +28,23 @@ public class Main {
                 int countLog = 0;
                 try {
                     chooseOption = scanner.nextLine().toUpperCase();
-                    Command commandFind = Command.valueOf(chooseOption);
+                    String[] arg = chooseOption.split(" ");
+                    Command commandFind = Command.valueOf(arg[0]);
                     switch (commandFind) {
                         case ADD:
                             countLog = getCountLog(scanner, logEntries, countLog);
                             System.out.println(countLog + " log(s) added");
                             break;
                         case COUNT:
-                            int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), chooseOption);
+                            int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), arg[1]);
                             if (countLevel > 0) {
-                                String lvl = LogAnalyzer.findLevel(chooseOption);
-                                System.out.println("Total " + lvl.toUpperCase() + " logs: " + countLevel);
+                                System.out.println("Total " + arg[1] + " logs: " + countLevel);
                             } else {
                                 System.err.println("There is no data");
                             }
+                            break;
                         case SEARCH:
-                            ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
+                            ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
                             if (!keywordArray.isEmpty()) {
                                 keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), chooseOption);
                                 System.out.println("Found " + keywordArray.size() + " log(s):");
@@ -53,6 +54,7 @@ public class Main {
                             } else {
                                 System.err.println("This keyword wasn't found");
                             }
+                            break;
                         case LATEST_ERROR:
                             LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
                             if (findLatestError != null) {
@@ -60,6 +62,7 @@ public class Main {
                             } else {
                                 System.err.println("The [ERROR] wasn't found");
                             }
+                            break;
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Incorrect input");
