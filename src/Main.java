@@ -7,7 +7,7 @@ public class Main {
         Application logEntries = new Application();
         System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands. 'EXIT' to leave.");
         String command;
-        String chooseOption;
+        String chooseOption = "";
         do {
             command = scanner.nextLine().toUpperCase();
             try {
@@ -63,10 +63,12 @@ public class Main {
                             }
                             break;
                     }
+                    if (!chooseOption.equals("exit")) {
+                        chooseOption = getString(scanner);
+                    }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Incorrect input");
                 }
-                chooseOption = getString(scanner);
             } while (!chooseOption.toLowerCase().contains("exit"));
         }
         System.out.println("Goodbye.");
