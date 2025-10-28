@@ -29,7 +29,12 @@ public class Main {
                 try {
                     chooseOption = scanner.nextLine();
                     String[] arg = chooseOption.split(" ");
-                    Command commandFind = Command.valueOf(arg[0].toUpperCase());
+                    Command commandFind;
+                    if (arg.length > 1) {
+                        commandFind = Command.valueOf(arg[0].toUpperCase());
+                    } else {
+                        commandFind = Command.valueOf(chooseOption);
+                    }
                     switch (commandFind) {
                         case ADD:
                             countLog = getCountLog(scanner, logEntries, countLog);
@@ -66,8 +71,8 @@ public class Main {
                     if (!chooseOption.equals("exit")) {
                         chooseOption = getString(scanner);
                     }
-                } catch (IllegalArgumentException e) {
-                    System.err.println("Incorrect input");
+                } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
+                    System.err.println("Incorrect input. Please check your enter information");
                 }
             } while (!chooseOption.toLowerCase().contains("exit"));
         }
