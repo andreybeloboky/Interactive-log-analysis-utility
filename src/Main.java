@@ -33,7 +33,7 @@ public class Main {
                     if (arg.length > 1) {
                         commandFind = Command.valueOf(arg[0].toUpperCase());
                     } else {
-                        commandFind = Command.valueOf(chooseOption);
+                        commandFind = Command.valueOf(chooseOption.toUpperCase());
                     }
                     switch (commandFind) {
                         case ADD:
