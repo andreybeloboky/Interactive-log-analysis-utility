@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class LogEntry {
     private long timestamp;
     private String level;

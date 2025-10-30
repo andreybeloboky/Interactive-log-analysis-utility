@@ -22,7 +22,7 @@ public class LogAnalyzer {
     }
 
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
-        Integer counterError;
+        int counterError;
         String indicator = "[Error]";
         int i = log.size() - 1;
         while (i >= 0) {
