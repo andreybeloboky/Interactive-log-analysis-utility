@@ -1,6 +1,9 @@
+package com.beloboky.task1;
+
 import java.util.ArrayList;
 
 public class LogAnalyzer {
+
     public static int countLogsByLevel(ArrayList<LogEntry> logs, String level) {
         int count = 0;
         for (LogEntry log : logs) {

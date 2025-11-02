@@ -1,3 +1,5 @@
+package com.beloboky.task1;
+
 public class LogEntry {
     private long timestamp;
     private String level;
