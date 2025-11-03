@@ -1,4 +1,4 @@
-package com.beloboky.task1;
+package org.example.exception;
 
 public class InvalidChoiceException extends Exception {
 

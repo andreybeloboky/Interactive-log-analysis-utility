@@ -1,4 +1,4 @@
-package com.beloboky.task1;
+package org.example.model;
 
 public enum Level {
     ERROR, INFO, DEBUG

@@ -1,12 +1,21 @@
-package com.beloboky.task1;
+package org.example.controller;
+
+import org.example.model.Command;
+import org.example.model.Level;
+import org.example.exception.InvalidChoiceException;
+import org.example.repository.LogStorageRepository;
+import org.example.service.LogAnalyzerService;
+import org.example.service.LogEntryService;
+import org.example.service.LogParserService;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class ConsoleController {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        LogStorage logEntries = new LogStorage();
+        LogStorageRepository logEntries = new LogStorageRepository();
         System.out.println("Welcome to the Interactive Log Analyzer. Type 'HELP' for commands. 'EXIT' to leave.");
         String chooseOption = "";
         do {
@@ -28,7 +37,7 @@ public class Main {
                         break;
                     case COUNT:
                         String transferToLevel = arg[1].substring(1, arg[1].length() - 1).toUpperCase();
-                        int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), Level.valueOf(transferToLevel));
+                        int countLevel = LogAnalyzerService.countLogsByLevel(logEntries.getLogEntries(), Level.valueOf(transferToLevel));
                         if (countLevel > 0) {
                             System.out.println("Total " + arg[1].toUpperCase() + " logs: " + countLevel);
                         } else {
@@ -36,10 +45,10 @@ public class Main {
                         }
                         break;
                     case SEARCH:
-                        ArrayList<LogEntry> keywordArray = LogAnalyzer.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
+                        ArrayList<LogEntryService> keywordArray = LogAnalyzerService.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
                         if (!keywordArray.isEmpty()) {
                             System.out.println("Found " + keywordArray.size() + " log(s):");
-                            for (LogEntry key : keywordArray) {
+                            for (LogEntryService key : keywordArray) {
                                 System.out.println("[" + key.getTimestamp() + "]" + " " + key.getLevel() + " " + key.getMessage());
                             }
                         } else {
@@ -47,7 +56,7 @@ public class Main {
                         }
                         break;
                     case LATEST_ERROR:
-                        LogEntry findLatestError = LogAnalyzer.findMostRecentError(logEntries.getLogEntries());
+                        LogEntryService findLatestError = LogAnalyzerService.findMostRecentError(logEntries.getLogEntries());
                         if (findLatestError != null) {
                             System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
                         } else {
@@ -68,7 +77,7 @@ public class Main {
         } while (!chooseOption.toLowerCase().contains("exit"));
     }
 
-    private static int addLog(Scanner scanner, LogStorage logEntries) {
+    private static int addLog(Scanner scanner, LogStorageRepository logEntries) {
         String logLine;
         int countLog = 0;
         do {
@@ -76,7 +85,7 @@ public class Main {
             logLine = scanner.nextLine();
             if (!logLine.toLowerCase().contains("end_add")) {
                 try {
-                    LogEntry logEntry = LogParser.parseLine(logLine);
+                    LogEntryService logEntry = LogParserService.parseLine(logLine);
                     logEntries.addItem(logEntry);
                     countLog++;
                 } catch (InvalidChoiceException e) {

@@ -1,12 +1,14 @@
-package com.beloboky.task1;
+package org.example.service;
+
+import org.example.model.Level;
 
 import java.util.ArrayList;
 
-public class LogAnalyzer {
+public class LogAnalyzerService {
 
-    public static int countLogsByLevel(ArrayList<LogEntry> logs, Level level) {
+    public static int countLogsByLevel(ArrayList<LogEntryService> logs, Level level) {
         int count = 0;
-        for (LogEntry log : logs) {
+        for (LogEntryService log : logs) {
             if (log.getLevel() == level) {
                 count++;
             }
@@ -14,9 +16,9 @@ public class LogAnalyzer {
         return count;
     }
 
-    public static ArrayList<LogEntry> findMessagesContaining(ArrayList<LogEntry> logs, String keyword) {
-        ArrayList<LogEntry> keywordArray = new ArrayList<>();
-        for (LogEntry log : logs) {
+    public static ArrayList<LogEntryService> findMessagesContaining(ArrayList<LogEntryService> logs, String keyword) {
+        ArrayList<LogEntryService> keywordArray = new ArrayList<>();
+        for (LogEntryService log : logs) {
             if (log.getMessage().toLowerCase().contains(keyword.toLowerCase())) {
                 keywordArray.add(log);
             }
@@ -24,7 +26,7 @@ public class LogAnalyzer {
         return keywordArray;
     }
 
-    public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
+    public static LogEntryService findMostRecentError(ArrayList<LogEntryService> log) {
         int counterError;
         Level level = Level.ERROR;
         for (int i = log.size() - 1; i >= 0; i--) {
