@@ -9,6 +9,7 @@ import org.example.service.LogEntryService;
 import org.example.service.LogParserService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleController {
@@ -56,9 +57,9 @@ public class ConsoleController {
                         }
                         break;
                     case LATEST_ERROR:
-                        LogEntryService findLatestError = LogAnalyzerService.findMostRecentError(logEntries.getLogEntries());
-                        if (findLatestError != null) {
-                            System.out.println(findLatestError.getLevel() + " " + findLatestError.getMessage());
+                        Optional<LogEntryService> findLatestError = LogAnalyzerService.findMostRecentError(logEntries.getLogEntries());
+                        if (findLatestError.isPresent()) {
+                            System.out.println(findLatestError.get().getLevel() + " " + findLatestError.get().getMessage());
                         } else {
                             System.err.println("The [ERROR] wasn't found");
                         }

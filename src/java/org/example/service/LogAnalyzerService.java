@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.model.Level;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class LogAnalyzerService {
 
@@ -26,15 +27,15 @@ public class LogAnalyzerService {
         return keywordArray;
     }
 
-    public static LogEntryService findMostRecentError(ArrayList<LogEntryService> log) {
+    public static Optional<LogEntryService> findMostRecentError(ArrayList<LogEntryService> log) {
         int counterError;
         Level level = Level.ERROR;
         for (int i = log.size() - 1; i >= 0; i--) {
             if (log.get(i).getLevel().equals(level)) {
                 counterError = i;
-                return log.get(counterError);
+                return Optional.of(log.get(counterError));
             }
         }
-        return null;
+        return Optional.empty();
     }
 }
