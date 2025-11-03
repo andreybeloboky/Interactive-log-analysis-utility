@@ -13,7 +13,7 @@ public class Main {
             System.out.println("Enter command");
             int countLog;
             try {
-                chooseOption = scanner.nextLine();
+                chooseOption = scanner.nextLine().trim();
                 String[] arg = chooseOption.split(" ");
                 Command commandFind;
                 if (arg.length > 1) {
