@@ -27,13 +27,10 @@ public class LogAnalyzer {
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
         int counterError;
         Level level = Level.ERROR;
-        int i = log.size() - 1;
-        while (i >= 0) {
+        for (int i = log.size() - 1; i >= 0; i--) {
             if (log.get(i).getLevel().equals(level)) {
                 counterError = i;
                 return log.get(counterError);
-            } else {
-                i--;
             }
         }
         return null;

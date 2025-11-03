@@ -10,7 +10,7 @@ public class LogParser {
         Matcher matcher = pattern.matcher(logLine);
         LogEntry logEntry;
         if (matcher.matches()) {
-            Level level = Level.valueOf(matcher.group(2));
+            Level level = Level.valueOf(matcher.group(2).toUpperCase());
             logEntry = new LogEntry(Integer.parseInt(matcher.group(1)), level, matcher.group(3));
         } else {
             throw new InvalidChoiceException("Incorrect data");
