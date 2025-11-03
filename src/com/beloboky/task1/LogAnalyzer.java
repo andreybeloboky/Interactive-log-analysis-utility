@@ -17,7 +17,7 @@ public class LogAnalyzer {
     public static ArrayList<LogEntry> findMessagesContaining(ArrayList<LogEntry> logs, String keyword) {
         ArrayList<LogEntry> keywordArray = new ArrayList<>();
         for (LogEntry log : logs) {
-            if (log.getMessage().contains(keyword)) {
+            if (log.getMessage().toLowerCase().contains(keyword.toLowerCase())) {
                 keywordArray.add(log);
             }
         }
@@ -26,10 +26,10 @@ public class LogAnalyzer {
 
     public static LogEntry findMostRecentError(ArrayList<LogEntry> log) {
         int counterError;
-        String indicator = "[Error]";
+        Level level = Level.ERROR;
         int i = log.size() - 1;
         while (i >= 0) {
-            if (log.get(i).getLevel().equalsIgnoreCase(indicator)) {
+            if (log.get(i).getLevel().equalsIgnoreCase("[" + level + "]")) {
                 counterError = i;
                 return log.get(counterError);
             } else {

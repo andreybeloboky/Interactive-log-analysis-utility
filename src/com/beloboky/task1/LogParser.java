@@ -5,21 +5,16 @@ import java.util.regex.Pattern;
 
 public class LogParser {
 
-    public static LogEntry parseLine(String logLine) {
+    public static LogEntry parseLine(String logLine) throws InvalidChoiceException {
         Pattern pattern = Pattern.compile("\\[(\\d+)] \\[(\\w+)] (.+)");
         Matcher matcher = pattern.matcher(logLine);
-        LogEntry logEntry = new LogEntry();
+        LogEntry logEntry;
         if (matcher.matches()) {
-            long timestamp = Integer.parseInt(matcher.group(1));
-            String level = "[" + matcher.group(2) + "]";
-            String message = matcher.group(3);
-            logEntry.setTimestamp(timestamp);
-            logEntry.setLevel(level);
-            logEntry.setMessage(message);
+
+            logEntry = new LogEntry(Integer.parseInt(matcher.group(1)), "[" + matcher.group(2) + "]", matcher.group(3));
         } else {
-            return null;
+            throw new InvalidChoiceException("Incorrect data");
         }
         return logEntry;
     }
-
 }

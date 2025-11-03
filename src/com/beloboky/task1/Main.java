@@ -23,10 +23,12 @@ public class Main {
                 }
                 switch (commandFind) {
                     case ADD:
-                        countLog = getCountLog(scanner, logEntries);
+                        countLog = addLog(scanner, logEntries);
                         System.out.println(countLog + " log(s) added");
                         break;
                     case COUNT:
+                        boolean lol = arg[1].equalsIgnoreCase("[" + Level.ERROR + "]");
+                        System.out.println(lol);
                         int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), arg[1]);
                         if (countLevel > 0) {
                             System.out.println("Total " + arg[1] + " logs: " + countLevel);
@@ -39,7 +41,7 @@ public class Main {
                         if (!keywordArray.isEmpty()) {
                             System.out.println("Found " + keywordArray.size() + " log(s):");
                             for (LogEntry key : keywordArray) {
-                                System.out.println(key.getTimestamp() + " " + key.getLevel() + " " + key.getMessage());
+                                System.out.println("[" + key.getTimestamp() + "]" + " " + key.getLevel() + " " + key.getMessage());
                             }
                         } else {
                             System.err.println("This keyword wasn't found");
@@ -67,16 +69,20 @@ public class Main {
         } while (!chooseOption.toLowerCase().contains("exit"));
     }
 
-    private static int getCountLog(Scanner scanner, LogStorage logEntries) {
+    private static int addLog(Scanner scanner, LogStorage logEntries) {
         String logLine;
         int countLog = 0;
         do {
             System.out.println("Enter log lines. Type 'END_ADD' to finish");
             logLine = scanner.nextLine();
             if (!logLine.toLowerCase().contains("end_add")) {
-                LogEntry logEntry = LogParser.parseLine(logLine);
-                logEntries.addItem(logEntry);
-                countLog++;
+                try {
+                    LogEntry logEntry = LogParser.parseLine(logLine);
+                    logEntries.addItem(logEntry);
+                    countLog++;
+                } catch (InvalidChoiceException e) {
+                    System.err.println("Your inter data is incorrect. Must be the next form [123] [ERROR] Example.");
+                }
             }
         } while (!logLine.equalsIgnoreCase("END_ADD"));
         return countLog;

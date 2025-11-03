@@ -1,11 +1,15 @@
 package com.beloboky.task1;
 
 public class LogEntry {
-    private long timestamp;
-    private String level;
-    private String message;
+    private final long timestamp;
+    private final String level;
+    private final String message;
 
-    public LogEntry() {}
+    public LogEntry(long timestamp, String level, String message) {
+        this.timestamp = timestamp;
+        this.level = level;
+        this.message = message;
+    }
 
     public long getTimestamp() {
         return timestamp;
@@ -17,17 +21,5 @@ public class LogEntry {
 
     public String getMessage() {
         return message;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
