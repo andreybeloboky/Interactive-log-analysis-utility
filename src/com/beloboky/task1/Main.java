@@ -27,11 +27,10 @@ public class Main {
                         System.out.println(countLog + " log(s) added");
                         break;
                     case COUNT:
-                        boolean lol = arg[1].equalsIgnoreCase("[" + Level.ERROR + "]");
-                        System.out.println(lol);
-                        int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), arg[1]);
+                        String transferToLevel = arg[1].substring(1, arg[1].length() - 1).toUpperCase();
+                        int countLevel = LogAnalyzer.countLogsByLevel(logEntries.getLogEntries(), Level.valueOf(transferToLevel));
                         if (countLevel > 0) {
-                            System.out.println("Total " + arg[1] + " logs: " + countLevel);
+                            System.out.println("Total " + arg[1].toUpperCase() + " logs: " + countLevel);
                         } else {
                             System.err.println("There is no data");
                         }

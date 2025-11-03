@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class LogAnalyzer {
 
-    public static int countLogsByLevel(ArrayList<LogEntry> logs, String level) {
+    public static int countLogsByLevel(ArrayList<LogEntry> logs, Level level) {
         int count = 0;
         for (LogEntry log : logs) {
-            if (log.getLevel().equalsIgnoreCase(level)) {
+            if (log.getLevel() == level) {
                 count++;
             }
         }
@@ -29,7 +29,7 @@ public class LogAnalyzer {
         Level level = Level.ERROR;
         int i = log.size() - 1;
         while (i >= 0) {
-            if (log.get(i).getLevel().equalsIgnoreCase("[" + level + "]")) {
+            if (log.get(i).getLevel().equals(level)) {
                 counterError = i;
                 return log.get(counterError);
             } else {
