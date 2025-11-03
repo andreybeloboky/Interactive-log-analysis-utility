@@ -11,7 +11,7 @@ public class Main {
         String chooseOption = "";
         do {
             System.out.println("Enter command");
-            int countLog = 0;
+            int countLog;
             try {
                 chooseOption = scanner.nextLine();
                 String[] arg = chooseOption.split(" ");
@@ -23,7 +23,7 @@ public class Main {
                 }
                 switch (commandFind) {
                     case ADD:
-                        countLog = getCountLog(scanner, logEntries, countLog);
+                        countLog = getCountLog(scanner, logEntries);
                         System.out.println(countLog + " log(s) added");
                         break;
                     case COUNT:
@@ -67,8 +67,9 @@ public class Main {
         } while (!chooseOption.toLowerCase().contains("exit"));
     }
 
-    private static int getCountLog(Scanner scanner, LogStorage logEntries, int countLog) {
+    private static int getCountLog(Scanner scanner, LogStorage logEntries) {
         String logLine;
+        int countLog = 0;
         do {
             System.out.println("Enter log lines. Type 'END_ADD' to finish");
             logLine = scanner.nextLine();
