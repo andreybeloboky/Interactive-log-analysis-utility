@@ -5,7 +5,7 @@ import org.example.model.Level;
 import org.example.exception.InvalidChoiceException;
 import org.example.repository.LogStorageRepository;
 import org.example.service.LogAnalyzerService;
-import org.example.service.LogEntryService;
+import org.example.model.LogEntry;
 import org.example.service.LogParserService;
 
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public class ConsoleController {
                         }
                         break;
                     case SEARCH:
-                        ArrayList<LogEntryService> keywordArray = LogAnalyzerService.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
+                        ArrayList<LogEntry> keywordArray = LogAnalyzerService.findMessagesContaining(logEntries.getLogEntries(), arg[1]);
                         if (!keywordArray.isEmpty()) {
                             System.out.println("Found " + keywordArray.size() + " log(s):");
-                            for (LogEntryService key : keywordArray) {
+                            for (LogEntry key : keywordArray) {
                                 System.out.println("[" + key.getTimestamp() + "]" + " " + key.getLevel() + " " + key.getMessage());
                             }
                         } else {
@@ -57,7 +57,7 @@ public class ConsoleController {
                         }
                         break;
                     case LATEST_ERROR:
-                        Optional<LogEntryService> findLatestError = LogAnalyzerService.findMostRecentError(logEntries.getLogEntries());
+                        Optional<LogEntry> findLatestError = LogAnalyzerService.findMostRecentError(logEntries.getLogEntries());
                         if (findLatestError.isPresent()) {
                             System.out.println(findLatestError.get().getLevel() + " " + findLatestError.get().getMessage());
                         } else {
@@ -86,7 +86,7 @@ public class ConsoleController {
             logLine = scanner.nextLine();
             if (!logLine.toLowerCase().contains("end_add")) {
                 try {
-                    LogEntryService logEntry = LogParserService.parseLine(logLine);
+                    LogEntry logEntry = LogParserService.parseLine(logLine);
                     logEntries.addItem(logEntry);
                     countLog++;
                 } catch (InvalidChoiceException e) {

@@ -1,13 +1,11 @@
-package org.example.service;
+package org.example.model;
 
-import org.example.model.Level;
-
-public class LogEntryService {
+public class LogEntry {
     private final long timestamp;
     private final Level level;
     private final String message;
 
-    public LogEntryService(long timestamp, Level level, String message) {
+    public LogEntry(long timestamp, Level level, String message) {
         this.timestamp = timestamp;
         this.level = level;
         this.message = message;
