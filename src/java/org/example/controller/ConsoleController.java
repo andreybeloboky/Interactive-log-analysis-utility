@@ -21,7 +21,7 @@ public class ConsoleController {
         String chooseOption = "";
         do {
             System.out.println("Enter command");
-            int countLog;
+            int countLog = 0;
             try {
                 chooseOption = scanner.nextLine().trim();
                 String[] arg = chooseOption.split(" ");
@@ -33,7 +33,20 @@ public class ConsoleController {
                 }
                 switch (commandFind) {
                     case ADD:
-                        countLog = addLog(scanner, logEntries);
+                        String logLine;
+                        do {
+                            System.out.println("Enter log lines. Type 'END_ADD' to finish");
+                            logLine = scanner.nextLine();
+                            if (!logLine.toLowerCase().contains("end_add")) {
+                                try {
+                                    LogEntry logEntry = LogParserService.parseLine(logLine);
+                                    logEntries.addItem(logEntry);
+                                    countLog++;
+                                } catch (InvalidChoiceException e) {
+                                    System.err.println("Your inter data is incorrect. Must be the next form [123] [ERROR] Example.");
+                                }
+                            }
+                        } while (!logLine.equalsIgnoreCase("END_ADD"));
                         System.out.println(countLog + " log(s) added");
                         break;
                     case COUNT:
@@ -76,24 +89,6 @@ public class ConsoleController {
                 System.err.println("Incorrect input. Please check your enter information");
             }
         } while (!chooseOption.toLowerCase().contains("exit"));
-    }
-
-    private static int addLog(Scanner scanner, LogStorageRepository logEntries) {
-        String logLine;
-        int countLog = 0;
-        do {
-            System.out.println("Enter log lines. Type 'END_ADD' to finish");
-            logLine = scanner.nextLine();
-            if (!logLine.toLowerCase().contains("end_add")) {
-                try {
-                    LogEntry logEntry = LogParserService.parseLine(logLine);
-                    logEntries.addItem(logEntry);
-                    countLog++;
-                } catch (InvalidChoiceException e) {
-                    System.err.println("Your inter data is incorrect. Must be the next form [123] [ERROR] Example.");
-                }
-            }
-        } while (!logLine.equalsIgnoreCase("END_ADD"));
-        return countLog;
+        System.out.println("Goodbye");
     }
 }
