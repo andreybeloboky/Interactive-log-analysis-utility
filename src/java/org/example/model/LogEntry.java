@@ -1,6 +1,7 @@
 package org.example.model;
 
 public class LogEntry {
+
     private final long timestamp;
     private final Level level;
     private final String message;
