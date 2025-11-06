@@ -16,9 +16,9 @@ public class LogParserService {
         if (matcher.matches()) {
             Level level = Level.valueOf(matcher.group(2).toUpperCase());
             logEntry = new LogEntry(Integer.parseInt(matcher.group(1)), level, matcher.group(3));
+            return logEntry;
         } else {
-            throw new InvalidChoiceException("Incorrect data");
+            throw new InvalidChoiceException("Incorrect , provided data %s".formatted(logLine));
         }
-        return logEntry;
     }
 }

@@ -1,5 +1,5 @@
 package org.example.model;
 
 public enum Command {
-    ADD, COUNT, SEARCH, LATEST_ERROR, EXIT, HELP
+    ADD, COUNT, SEARCH, LATEST_ERROR, EXIT, HELP, END_ADD
 }
